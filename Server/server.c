@@ -5,16 +5,25 @@
 #include <stdlib.h> 
 #include <netinet/in.h> 
 #include <string.h> 
+#include <pthread.h>
 
-void handle_request(int new_socket) {
-
+void* handle_request(void *new_socket_p) {
+    int new_socket = (int)(long)new_socket_p;
+// void handle_request(int new_socket) {
+    
     int valread = 0;
     char filename[1024] = {0}; 
 	char *hello = "Hello from server\n"; 
     
+    
     valread = read( new_socket , filename, 1024); 
+    
+    
+    
     filename[valread] = 0; // end what read
-	printf("%s\n",filename ); // what the client says
+	printf("filename is %s\n",filename ); // what the client says
+	
+	printf("hi");
 	
 	// read file 
     char* text;
@@ -41,6 +50,9 @@ void handle_request(int new_socket) {
 	free(text);
 }
 
+
+  
+  pthread_t tid; //pthread_t ==> long
 
 int main(int argc, char const *argv[]) 
 { 
@@ -96,9 +108,18 @@ int main(int argc, char const *argv[])
     		perror("accept"); 
     		exit(EXIT_FAILURE); 
     	} 
-    	printf("New Connection\n");  
+    // 	printf("New Connection\n");  
+        printf("%i\n", new_socket);  
         
-        handle_request(new_socket);	
+        //handle_request(new_socket);	
+        
+
+        // int a = rand();
+        // printf("Launching thread with id %d to handle incoming request\n",a);
+        
+        if(pthread_create(&tid, NULL, handle_request, (void *)(long)new_socket) != 0){ // we have to pass in a long pointer... it took me hours to figure out...
+             perror("Error while creating thread.");
+        }
 
     	
 	}

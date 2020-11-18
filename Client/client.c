@@ -72,7 +72,7 @@ int main(int argc, char const *argv[])
 	    i ++;
 	}
 	
-	printf("%s\n", size);
+	printf("File size from server is %s\n", size);
 	
 	valread = read( sock , buffer, atoi(size)); 
 	
