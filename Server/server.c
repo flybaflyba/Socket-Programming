@@ -15,19 +15,21 @@ void* handle_request(void *new_socket_p) {
     char filename[1024] = {0}; 
 	char *hello = "Hello from server\n"; 
     
-    
     valread = read( new_socket , filename, 1024); 
-    
-    
     
     filename[valread] = 0; // end what read
 	printf("filename is %s\n",filename ); // what the client says
 	
-	printf("hi");
+	char filePath[100]; // declare file path 
+	strcpy(filePath, "/home/ubuntu/environment/Socket Programming C/Server/files/"); // set file path 
+	const char * path = filePath;
+	strcat(filePath, filename);
+	printf("filePath is %s\n",filePath );
+	//printf("hi");
 	
 	// read file 
     char* text;
-    FILE *pf = fopen(filename,"r");
+    FILE *pf = fopen(path ,"r");
     fseek(pf,0,SEEK_END);
     long lSize = ftell(pf);
     // 用完后需要将内存free掉
@@ -35,7 +37,8 @@ void* handle_request(void *new_socket_p) {
     rewind(pf); 
     fread(text,sizeof(char),lSize,pf);
     text[lSize] = '\0';	
-    printf("size is %lo,\n%s \n",lSize, text);
+    // printf("size is %lo,\n%s \n",lSize, text);
+    printf("size is %lo\n",lSize);
     
     
     char size[200];
@@ -46,7 +49,7 @@ void* handle_request(void *new_socket_p) {
     write(new_socket, "*", strlen("*"));
     write(new_socket, text, strlen(text));
 	
-	printf("\nServer: filesize + flag + content sent\n"); 
+	printf("Server: filesize + flag + content sent\n"); 
 	free(text);
 }
 
@@ -108,23 +111,21 @@ int main(int argc, char const *argv[])
     		perror("accept"); 
     		exit(EXIT_FAILURE); 
     	} 
-    // 	printf("New Connection\n");  
-        printf("%i\n", new_socket);  
+     	printf("New Connection\n");  
+        //printf("%i\n", new_socket);  
         
         //handle_request(new_socket);	
         
-
         // int a = rand();
         // printf("Launching thread with id %d to handle incoming request\n",a);
         
-        if(pthread_create(&tid, NULL, handle_request, (void *)(long)new_socket) != 0){ // we have to pass in a long pointer... it took me hours to figure out...
+        // we have to pass in a long pointer as argument...... it took me hours to figure out...
+        if(pthread_create(&tid, NULL, handle_request, (void *)(long)new_socket) != 0){ 
              perror("Error while creating thread.");
         }
 
     	
 	}
-	
-	
 	
 	return 0; 
 } 
