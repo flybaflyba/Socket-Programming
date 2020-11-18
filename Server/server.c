@@ -5,14 +5,31 @@
 #include <stdlib.h> 
 #include <netinet/in.h> 
 #include <string.h> 
+
+void handle_request(int new_socket) {
+
+    int valread = 0;
+    char buffer[1024] = {0}; 
+	char *hello = "Hello from server"; 
+    
+    valread = read( new_socket , buffer, 1024); 
+    buffer[valread] = 0; // end what read
+	printf("%s\n",buffer ); // what the client says
+    	
+// 	send(new_socket , hello , strlen(hello) , 0 );
+    write(new_socket, hello, strlen(hello));
+	
+	printf("Hello message sent\n"); 
+}
+
+
 int main(int argc, char const *argv[]) 
 { 
-	int server_fd, new_socket, valread; 
+	int server_fd, new_socket; 
 	struct sockaddr_in address; 
 	int opt = 1; 
 	int addrlen = sizeof(address); 
-	char buffer[1024] = {0}; 
-	char *hello = "Hello from server"; 
+
 	short port;
 	
 	if(argc < 2){
@@ -60,13 +77,15 @@ int main(int argc, char const *argv[])
     		perror("accept"); 
     		exit(EXIT_FAILURE); 
     	} 
-    	valread = read( new_socket , buffer, 1024); 
-    	printf("%s\n",buffer ); 
-    	send(new_socket , hello , strlen(hello) , 0 ); 
-    	printf("Hello message sent\n"); 
+    	printf("New Connection\n");  
+        
+        handle_request(new_socket);	
+
+    	
 	}
 	
 	
 	
 	return 0; 
 } 
+
