@@ -28,6 +28,7 @@ int main(int argc, char const *argv[])
 		return -1; 
 	} 
 
+
 	serv_addr.sin_family = AF_INET; 
 	serv_addr.sin_port = htons(port); 
 	
@@ -43,6 +44,13 @@ int main(int argc, char const *argv[])
 		printf("\nConnection Failed \n"); 
 		return -1; 
 	} 
+	
+	char filename[200];
+	printf("Enter the name of the file you want to look at: \n"); 
+    fgets(filename, 200, stdin);  
+    filename[strcspn(filename, "\n")] = 0; // get rid of the last new line
+    printf("You enterrd: %s \n", filename); 
+	
 // 	send(sock , hello , strlen(hello) , 0 ); 
     write(sock, hello, strlen(hello));
 	printf("Hello message sent\n"); 
