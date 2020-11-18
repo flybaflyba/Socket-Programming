@@ -9,17 +9,33 @@
 void handle_request(int new_socket) {
 
     int valread = 0;
-    char buffer[1024] = {0}; 
+    char filename[1024] = {0}; 
 	char *hello = "Hello from server"; 
     
-    valread = read( new_socket , buffer, 1024); 
-    buffer[valread] = 0; // end what read
-	printf("%s\n",buffer ); // what the client says
+    valread = read( new_socket , filename, 1024); 
+    filename[valread] = 0; // end what read
+	printf("%s\n",filename ); // what the client says
+	
+	// read file 
+    char* text;
+    FILE *pf = fopen(filename,"r");
+    fseek(pf,0,SEEK_END);
+    long lSize = ftell(pf);
+    // 用完后需要将内存free掉
+    text=(char*)malloc(lSize+1);
+    rewind(pf); 
+    fread(text,sizeof(char),lSize,pf);
+    text[lSize] = '\0';	
+    printf("size is %lo,\n %s \n",lSize, text);
+    
+    
+    	
     	
 // 	send(new_socket , hello , strlen(hello) , 0 );
     write(new_socket, hello, strlen(hello));
 	
 	printf("Server: Hello message sent\n"); 
+	free(text);
 }
 
 
