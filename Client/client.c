@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
 	int sock = 0, valread; 
 	struct sockaddr_in serv_addr; 
 	char *hello = "Hello from client\n"; 
-	char buffer[1024] = {0}; 
+	char buffer[99999] = {0}; 
 	short port;
 	
 	if(argc < 2){
@@ -55,8 +55,28 @@ int main(int argc, char const *argv[])
 // 	send(sock , hello , strlen(hello) , 0 ); 
     // write(sock, hello, strlen(hello)); 
     write(sock, filename, strlen(filename)); // send filename over 
-	printf("Client: Hello message sent\n"); 
-	valread = read( sock , buffer, 1024); 
+	printf("Client: filename sent\n"); 
+	
+	
+	char temp[10] = "s"; // read one character once, stop when see "*"
+	int valread_two;
+	char size[200]; // we don't know what the size is in the beginning 
+	int i = 0;
+	while(1) {
+	    valread_two = read( sock , temp, 1); 
+	    printf("%s\n",temp);
+	    if(strcmp(temp, "*") == 0) {
+	        break; // stop when see "*"
+	    }
+	    size[i] = temp[0]; // construct size array so that we can use it later for reading the rest 
+	    i ++;
+	}
+	
+	printf("%s\n", size);
+	
+	valread = read( sock , buffer, atoi(size)); 
+	
+	printf("This is the content --------------------------------------  \n\n");
 	printf("%s\n",buffer ); // what the server says 
 	return 0; 
 } 

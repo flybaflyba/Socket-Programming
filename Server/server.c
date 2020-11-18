@@ -26,19 +26,18 @@ void handle_request(int new_socket) {
     rewind(pf); 
     fread(text,sizeof(char),lSize,pf);
     text[lSize] = '\0';	
-    printf("size is %lo,\n %s \n",lSize, text);
+    printf("size is %lo,\n%s \n",lSize, text);
     
     
-    	
     char size[200];
     sprintf(size, "%lo" , lSize);
     
 // 	send(new_socket , hello , strlen(hello) , 0 );
     write(new_socket, size, strlen(size));
-    write(new_socket, "*****", strlen("*****"));
+    write(new_socket, "*", strlen("*"));
     write(new_socket, text, strlen(text));
 	
-	printf("Server: Hello message sent\n"); 
+	printf("\nServer: filesize + flag + content sent\n"); 
 	free(text);
 }
 
