@@ -10,7 +10,7 @@ void handle_request(int new_socket) {
 
     int valread = 0;
     char filename[1024] = {0}; 
-	char *hello = "Hello from server"; 
+	char *hello = "Hello from server\n"; 
     
     valread = read( new_socket , filename, 1024); 
     filename[valread] = 0; // end what read
@@ -30,9 +30,13 @@ void handle_request(int new_socket) {
     
     
     	
-    	
+    char size[200];
+    sprintf(size, "%lo" , lSize);
+    
 // 	send(new_socket , hello , strlen(hello) , 0 );
-    write(new_socket, hello, strlen(hello));
+    write(new_socket, size, strlen(size));
+    write(new_socket, "*****", strlen("*****"));
+    write(new_socket, text, strlen(text));
 	
 	printf("Server: Hello message sent\n"); 
 	free(text);

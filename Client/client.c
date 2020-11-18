@@ -10,7 +10,7 @@ int main(int argc, char const *argv[])
 { 
 	int sock = 0, valread; 
 	struct sockaddr_in serv_addr; 
-	char *hello = "Hello from client"; 
+	char *hello = "Hello from client\n"; 
 	char buffer[1024] = {0}; 
 	short port;
 	
@@ -47,7 +47,7 @@ int main(int argc, char const *argv[])
 	
 	// get file name from input 
 	char filename[200];
-	printf("Enter the name of the file you want to look at: \n"); 
+	printf("Enter the name of the file you want to look at: "); 
     fgets(filename, 200, stdin);  
     filename[strcspn(filename, "\n")] = 0; // get rid of the last new line
     printf("You enterrd: %s \n", filename); 
