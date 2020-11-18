@@ -45,6 +45,7 @@ int main(int argc, char const *argv[])
 		return -1; 
 	} 
 	
+	// get file name from input 
 	char filename[200];
 	printf("Enter the name of the file you want to look at: \n"); 
     fgets(filename, 200, stdin);  
@@ -52,8 +53,9 @@ int main(int argc, char const *argv[])
     printf("You enterrd: %s \n", filename); 
 	
 // 	send(sock , hello , strlen(hello) , 0 ); 
-    write(sock, hello, strlen(hello));
-	printf("Hello message sent\n"); 
+    // write(sock, hello, strlen(hello)); 
+    write(sock, filename, strlen(filename)); // send filename over 
+	printf("Client: Hello message sent\n"); 
 	valread = read( sock , buffer, 1024); 
 	printf("%s\n",buffer ); // what the server says 
 	return 0; 

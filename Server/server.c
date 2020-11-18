@@ -19,7 +19,7 @@ void handle_request(int new_socket) {
 // 	send(new_socket , hello , strlen(hello) , 0 );
     write(new_socket, hello, strlen(hello));
 	
-	printf("Hello message sent\n"); 
+	printf("Server: Hello message sent\n"); 
 }
 
 
